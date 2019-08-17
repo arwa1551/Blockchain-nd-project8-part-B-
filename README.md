@@ -104,7 +104,4 @@ to make the web faster, safer, and more open.
 * Truffle
 
 ## Contract Address
-The contract was deployed to
- ```
-Rinkeby
-``` test network with the address of (0x57D6df48ACda3d450c4872a3B2A80F10c08De705).
+The contract was deployed to ```Rinkeby``` test network with the address of [0x4ff1d25829a44cb7872978fc1a58d9cc0fafa479](https://rinkeby.etherscan.io/address/0x4ff1d25829a44cb7872978fc1a58d9cc0fafa479).
