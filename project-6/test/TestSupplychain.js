@@ -44,9 +44,10 @@ contract('SupplyChain', function(accounts) {
    // 1st Test
    it("Testing smart contract function harvestItem() that allows a farmer to harvest coffee", async() => {
     const supplyChain = await SupplyChain.deployed()
+    await supplyChain.addFarmer(originFarmerID)
     
     // Mark an item as Harvested by calling function harvestItem()
-    await supplyChain.harvestItem(upc, originFarmerID, originFarmName, originFarmInformation, originFarmLatitude, originFarmLongitude, productNotes)
+    await supplyChain.harvestItem(upc, originFarmerID, originFarmName, originFarmInformation, originFarmLatitude, originFarmLongitude, productNotes, {from: originFarmerID})
 
     // Retrieve the just now saved item from blockchain by calling function fetchItem()
     const resultBufferOne = await supplyChain.fetchItemBufferOne.call(upc)
@@ -121,10 +122,11 @@ it("Testing smart contract function sellItem() that allows a farmer to sell coff
  // 5th Test
  it("Testing smart contract function buyItem() that allows a distributor to buy coffee", async() => {
     const supplyChain = await SupplyChain.deployed()
+    await supplyChain.addDistributor(distributorID)
 
     // Mark an item as Sold by calling function buyItem()
     await supplyChain.buyItem(upc, {value: web3.utils.toWei("2", "ether"), from: distributorID})
-
+    
     // Retrieve the just now saved item from blockchain by calling function fetchItem()
     const resultBufferOne = await supplyChain.fetchItemBufferOne.call(upc)
     const resultBufferTwo = await supplyChain.fetchItemBufferTwo.call(upc)
@@ -156,6 +158,7 @@ it("Testing smart contract function shipItem() that allows a distributor to ship
 // 7th Test
 it("Testing smart contract function receiveItem() that allows a retailer to mark coffee received", async() => {
     const supplyChain = await SupplyChain.deployed()
+    await supplyChain.addRetailer(retailerID)
 
     // Mark an item as Sold by calling function receiveItem()
     await supplyChain.receiveItem(upc, {from: retailerID})
@@ -174,6 +177,7 @@ it("Testing smart contract function receiveItem() that allows a retailer to mark
 // 8th Test
 it("Testing smart contract function purchaseItem() that allows a consumer to purchase coffee", async() => {
     const supplyChain = await SupplyChain.deployed()
+    await supplyChain.addConsumer(consumerID)
 
     // Mark an item as Sold by calling function purchaseItem()
     await supplyChain.purchaseItem(upc, {from: consumerID})
@@ -224,7 +228,8 @@ it("Testing smart contract function fetchItemBufferTwo() that allows anyone to f
     assert.equal(resultBufferTwo[6], distributorID, 'Error: Invalid distributorID')
     assert.equal(resultBufferTwo[7], retailerID, 'Error: Invalid retailerID')
     assert.equal(resultBufferTwo[8], consumerID, 'Error: Invalid consumerID') 
-    
 })
 });
+
+
 
